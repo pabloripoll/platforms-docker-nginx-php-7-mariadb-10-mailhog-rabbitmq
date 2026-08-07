@@ -1,0 +1,25 @@
+services:
+  mariadb:
+    image: ${COMPOSE_PROJECT_LEAD}-${COMPOSE_PROJECT_NAME}:${COMPOSE_PROJECT_IMGK}
+    pull_policy: never
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ${COMPOSE_PROJECT_LEAD}-${COMPOSE_PROJECT_NAME}
+    deploy:
+      resources:
+        limits:
+          cpus: ${COMPOSE_PROJECT_CPUS}
+          memory: ${COMPOSE_PROJECT_MEMO}
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Etc/UTC
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - .${COMPOSE_PROJECT_DATA}:/var/lib/mysql
+    tty: true
+    restart: unless-stopped
